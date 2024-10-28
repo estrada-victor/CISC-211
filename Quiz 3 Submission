@@ -1,0 +1,26 @@
+Here's my quiz 3 submission
+
+section .data
+    number db 5          ; Define the number to calculate factorial of
+    result db 1          ; Initialize result to 1 (0! = 1)
+
+section .text
+    global _start
+
+_start:
+    movzx eax, byte [number]  ; Load the number into eax
+    cmp eax, 0                 ; Compare eax with 0
+    je done                    ; If number is 0, jump to done (0! = 1)
+
+factorial_loop:
+    movzx ebx, eax             ; Copy eax to ebx
+    mul byte [result]          ; Multiply eax by the current result
+    mov [result], al           ; Store the result back in result
+    dec eax                    ; Decrement eax
+    jnz factorial_loop         ; If eax is not zero, repeat the loop
+
+done:
+    ; Exit the program (for Linux)
+    mov eax, 1                 ; syscall: exit
+    xor ebx, ebx               ; status: 0
+    int 0x80                   ; call kernel
